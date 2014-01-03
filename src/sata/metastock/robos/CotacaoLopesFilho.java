@@ -6,20 +6,13 @@
  */
 package sata.metastock.robos;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.TimeZone;
 
-import sata.domain.util.SATAUtil;
+import sata.domain.interfaces.IBuscaCotacao;
 import sata.metastock.http.HTTPSata;
 
 /**
@@ -37,7 +30,13 @@ public class CotacaoLopesFilho {
 		get(codigo);
 		return new BigDecimal(cotacao.replace(".","").replace(",", "."));
 	}
-
+	
+	public static void get(String codigo) {
+		IBuscaCotacao bc = new BuscaCotacao();
+		cotacao = bc.getCotacao(codigo);
+	}
+	
+	/*
 	public static void get(String codigo) {
 		// Populate the hashtable with key value pairs of
 		// the parameter name and
@@ -59,7 +58,7 @@ public class CotacaoLopesFilho {
 		int corte = html.indexOf(codigo.toUpperCase());
 		if (corte < 0) {
 
-			cotacao = "61,11";
+			cotacao = "9999,99";
 		} else {
 			html = html.substring(corte);
 
@@ -91,6 +90,7 @@ public class CotacaoLopesFilho {
 		hora = hour24 + ":" + min + ":" + sec;
 
 	}
+	*/
 
 	/**
 	 * @return Returns the cotacao.

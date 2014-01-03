@@ -13,26 +13,7 @@ public class LocaleUtil implements IConstants {
 	
 	private static Locale locale;
 	private static ResourceBundle rb;
-	
-	@SuppressWarnings("unchecked")
-	public static <MB> MB getMB(Class<MB> clazz) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		if (context != null) {
-			String mbName = clazz.getSimpleName().substring(0, 1).toLowerCase() + clazz.getSimpleName().substring(1);
-			MB mb = (MB) context.getExternalContext().getSessionMap().get(mbName);
-			if (mb == null) {
-				try {
-					mb = clazz.newInstance();
-					context.getExternalContext().getSessionMap().put(mbName, mb);
-				} catch (Exception e) {
-					return null;
-				}
-			}
-			return mb;
-		}
-		else return null;
-	}
-	
+
 	public static Locale getCurrentLocale() {
 		if (locale != null)
 			return locale;

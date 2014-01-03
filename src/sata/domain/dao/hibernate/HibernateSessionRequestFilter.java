@@ -39,7 +39,7 @@ public class HibernateSessionRequestFilter implements Filter {
         Session disconnectedSession =
                 (Session) httpSession.getAttribute(HIBERNATE_SESSION_KEY);
         
-     // Start a new conversation or in the middle?
+        // Start a new conversation or in the middle?
         if (disconnectedSession == null) {
             LoggerUtil.log(">>> New conversation");
             currentSession = sf.openSession();

@@ -1,4 +1,4 @@
-package sata.domain.util;
+package sata.auto.web.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +12,8 @@ import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import sata.auto.web.util.LocaleUtil;
+import sata.domain.util.IConstants;
+import sata.domain.util.SATAUtil;
 
 public final class FacesUtil implements IConstants {
 	
@@ -115,12 +116,6 @@ public final class FacesUtil implements IConstants {
 		}
 		return msg;
 	}*/
-	
-//	public static Locale getCurrentLocale() {
-//		LocaleMB localeMB = getMB(LocaleMB.class);
-//		if (localeMB!= null) return localeMB.getCurrentLocale();
-//		else return LOCALE_BRASIL;
-//	}
 	
 	@SuppressWarnings("unchecked")
 	public static <MB> MB getMB(Class<MB> clazz) {

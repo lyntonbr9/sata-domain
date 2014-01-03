@@ -101,7 +101,10 @@ public class HTTPSata {
 			}
 
 			in.close();
-
+			
+			// faz a conversão de UTF-8 para ISO-8859-1 por causa da acentuacao
+			String respostaUTF8 = new String(returnString.getBytes(), "UTF-8");
+			returnString = new String(respostaUTF8.getBytes(), "ISO-8859-1");
 			// return the string that was read.
 			return returnString;
 		} catch (Exception e) {
