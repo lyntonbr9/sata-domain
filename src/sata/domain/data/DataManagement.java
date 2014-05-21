@@ -265,19 +265,19 @@ public class DataManagement {
 
 	}
 
-//	public static void main(String[] args) {
-//		DataManagement dm = new DataManagement();
-////		String ano= new String("2011");
-//		
-////		dm.atualizarOpcoes(codigoOpcao, codigoAcao, ano)
-////		IAtivoDAO ativoDAO = SATAFactoryFacade.getAtivoDAO();
+	public static void main(String[] args) {
+		DataManagement dm = new DataManagement();
+//		String ano= new String("2011");
+		
+//		dm.atualizarOpcoes(codigoOpcao, codigoAcao, ano)
+//		IAtivoDAO ativoDAO = SATAFactoryFacade.getAtivoDAO();
 ////		List<String> listaCodigosOpcoesLiquidas = ativoDAO.getCodigosOpcoesLiquidas(ano);
 ////		for(String nomeOpcao: listaCodigosOpcoesLiquidas)
 ////			dm.importarArqCotacaoHistoricaBovespaToDB(nomeOpcao, ano);
 //		
-//		for(int i=2000; i < 2011; i++){
-//			dm.importarArqCotacaoHistoricaBovespaToDB("PETR4", String.valueOf(i));	
-//		}
+		for(int i=2014; i < 2015; i++){
+			dm.importarArqCotacaoHistoricaBovespaToDB("PETR4", String.valueOf(i));	
+		}
 		
 //		dm.importarArqCotacaoHistoricaOpcoesBovespaToDB("PETR", "PETR4", ano);
 //		dm.atualizarOpcoes("PETR", "PETR4", ano);
@@ -311,41 +311,41 @@ public class DataManagement {
 //		
 //		System.out.println(ts.getDay()+ "-" + ts.getMonth() + "-" + ts.getYear());		
 //		
-//	}
-
-	public static void main(String[] args) {
-		
-		long APOSTA = 200;
-		long MESES = 120;
-		long CORRETAGEM = 12;
-		long CAIXA_INICIAL = 3000;
-	
-		long caixaInicial = CAIXA_INICIAL;
-		long caixa = caixaInicial; //caixa para cobrir prejuizo
-		long perda = 0;
-		long aposta = APOSTA;
-		System.out.println("caixa: " + caixa + " perda: " + perda  + " aposta futura: " + aposta);
-		for(int i=0; i < MESES; i++) {
-			if(Math.random() <= 0.5) { //sucesso
-				caixa = caixa + aposta;
-				aposta = Math.round((float) caixa*0.05);
-				perda = 0;
-			} else { //fracasso
-				perda = aposta * (-1);
-				aposta = Math.abs(perda) + Math.abs(aposta);
-				caixa = caixa + perda;
-			}
-			caixa = caixa - CORRETAGEM;
-			System.out.println("caixa: " + caixa + " perda: " + perda  + " aposta futura: " + aposta);
-		}
-		System.out.println("caixa inicial: " + caixaInicial);
-		System.out.println("caixa final: " + caixa);
-		System.out.println("lucro: " + (caixa - caixaInicial));
-		
-		double rendMensal = 0.0;
-		double potencia = ((double) 1 / (double) MESES);
-		rendMensal = Math.pow((caixa / caixaInicial), potencia) - 1;
-		System.out.println("renda mensal: " + rendMensal*100);
 	}
+
+//	public static void main(String[] args) {
+//		
+//		long APOSTA = 200;
+//		long MESES = 120;
+//		long CORRETAGEM = 12;
+//		long CAIXA_INICIAL = 3000;
+//	
+//		long caixaInicial = CAIXA_INICIAL;
+//		long caixa = caixaInicial; //caixa para cobrir prejuizo
+//		long perda = 0;
+//		long aposta = APOSTA;
+//		System.out.println("caixa: " + caixa + " perda: " + perda  + " aposta futura: " + aposta);
+//		for(int i=0; i < MESES; i++) {
+//			if(Math.random() <= 0.5) { //sucesso
+//				caixa = caixa + aposta;
+//				aposta = Math.round((float) caixa*0.05);
+//				perda = 0;
+//			} else { //fracasso
+//				perda = aposta * (-1);
+//				aposta = Math.abs(perda) + Math.abs(aposta);
+//				caixa = caixa + perda;
+//			}
+//			caixa = caixa - CORRETAGEM;
+//			System.out.println("caixa: " + caixa + " perda: " + perda  + " aposta futura: " + aposta);
+//		}
+//		System.out.println("caixa inicial: " + caixaInicial);
+//		System.out.println("caixa final: " + caixa);
+//		System.out.println("lucro: " + (caixa - caixaInicial));
+//		
+//		double rendMensal = 0.0;
+//		double potencia = ((double) 1 / (double) MESES);
+//		rendMensal = Math.pow((caixa / caixaInicial), potencia) - 1;
+//		System.out.println("renda mensal: " + rendMensal*100);
+//	}
 
 }
