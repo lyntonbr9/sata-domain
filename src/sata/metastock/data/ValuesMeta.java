@@ -65,7 +65,6 @@ public class ValuesMeta {
 	public ValuesMeta(String acao, String dois) {
 		try {
 			ICotacaoAtivoDAO caDAO = SATAFactoryFacade.getCotacaoAtivoDAO();
-	//		listaCotacoes = caDAO.getCotacoesDoAtivo(acao, "2011");
 			listaCotacoes = caDAO.getCotacoesDoAtivo(acao);
 		} catch (SQLException e) {
 			e.printStackTrace();

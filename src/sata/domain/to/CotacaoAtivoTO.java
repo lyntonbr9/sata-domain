@@ -60,6 +60,15 @@ public class CotacaoAtivoTO implements TO, Comparable<CotacaoAtivoTO>, Serializa
 	public BigDecimal getValorFechamento() {
 		return new BigDecimal(Double.parseDouble(fechamento)/(100*split));
 	}
+	public BigDecimal getValorAbertura() {
+		return new BigDecimal(Double.parseDouble(abertura)/(100*split));
+	}
+	public BigDecimal getValorMinima() {
+		return new BigDecimal(Double.parseDouble(minima)/(100*split));
+	}
+	public BigDecimal getValorMaxima() {
+		return new BigDecimal(Double.parseDouble(maxima)/(100*split));
+	}
 	
 	public BigDecimal getValorVolatilidadeAnual() {
 		return new BigDecimal(volatilidadeAnual);

@@ -15,20 +15,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import sata.domain.dao.DAOFactory;
-import sata.domain.dao.ICotacaoAtivoDAO;
 import sata.domain.simulacao.SimulacaoAcaoAltaVarPoucoTempo;
 import sata.domain.to.CotacaoAtivoTO;
 import sata.metastock.data.ValuesMeta;
-import sata.metastock.exceptions.VetorMenor;
-import sata.metastock.indices.ATR;
 import sata.metastock.indices.IFR;
-import sata.metastock.indices.Stochastic;
 import sata.metastock.simulacao.Capital;
 
 
@@ -40,6 +38,8 @@ import sata.metastock.simulacao.Capital;
  */
 class SpaceView extends JPanel {
 	
+	private static final long serialVersionUID = -3692927210457593090L;
+	
 	private String acao = "";
 	private String acaoAnterior = "c";
 
@@ -47,7 +47,6 @@ class SpaceView extends JPanel {
 	private int intervalo = 120;
 	
 	private boolean reload = false;
-	private int diasCandle = 1;
 	
 	private int xDireitoClick = 0;
 	private int yDireitoClick = 0;
@@ -61,7 +60,8 @@ class SpaceView extends JPanel {
 	
 	//areas
 	private int zoom = 1;
-	private int areaY = 290/zoom;
+//	private int areaY = 290/zoom;
+	private int areaY = 590/zoom;
 	private int areaV= 50/zoom;
 	private int areaI = 100/zoom;
 	private int areaE = 100/zoom;
@@ -88,11 +88,12 @@ class SpaceView extends JPanel {
 	private int largCandle = 5;
 	
 	//zoom
-	
 	private int z = 3;
 	
 	//dias
-	private int dias;	
+	private int dias;
+	
+	private int diasCandle;
 	
 	/*dias setados manualmente*/
 	private int primeiro = 0;
@@ -124,11 +125,12 @@ class SpaceView extends JPanel {
     double[] atrExit = null;
     
     //simulação
-    
     private boolean comprado = false;
     private Capital capital = new Capital();
     
     private List<CotacaoAtivoTO> candles;
+    
+    private ValuesMeta values;
 	
     //=================================== constructor
     public SpaceView () {
@@ -149,14 +151,16 @@ class SpaceView extends JPanel {
         g.clearRect(0,0,1024,768);
         //setBackground(new Color(200,200,200,0));
  
-        ValuesMeta values = new ValuesMeta(acao,"");
-      //  ValuesMeta values = new ValuesMeta("USIM5","");
+        //ValuesMeta values = new ValuesMeta(acao,"");
+        if(values == null || !acao.equals(acaoAnterior)) {
+        	values = new ValuesMeta(acao,"");
+        }
         candles = values.getValores();
         
         /*Simulação*/
 		SimulacaoAcaoAltaVarPoucoTempo s = new SimulacaoAcaoAltaVarPoucoTempo();				
 		s.getResultado(candles, null);
-		ArrayList indicesIndicados = s.getIndicesIndicadosSimulacao();
+		ArrayList<Integer> indicesIndicados = s.getIndicesIndicadosSimulacao();
         
         if(reload || !acao.equals(acaoAnterior)){
         	reload = false;
@@ -164,9 +168,6 @@ class SpaceView extends JPanel {
             dias = candles.size();
             
          //   if(dias < intervalo) intervalo = dias;
-            
-        
-             
         }
         
         if(yDireitoClick < inicioGrafprincipal && clicouDireito){
@@ -201,21 +202,17 @@ class SpaceView extends JPanel {
         } 
         
         if(fim > candles.size() -1 ){
-        	
         	inicio = candles.size() - intervalo;
         	fim = candles.size() -1;        	
         	primeiro = candles.size() - intervalo;
         	ultimo = candles.size() -1;
         }
         
-        if(candles.size()<intervalo){
-        	
+        if(candles.size()<intervalo){  	
         	inicio = 0;
         	fim = candles.size() -1;        	
         	primeiro = 0;
         	ultimo = candles.size() -1;
-            
-        	
         }
       
         
@@ -331,7 +328,7 @@ class SpaceView extends JPanel {
         
         if(x1Vazio && x1Click!=0 && x2Click!=0 && y1Click!=0 && y2Click!=0){
         
-	        ArrayList pontosCanal = getPontos(x,espacoDia);
+	        List<Point> pontosCanal = getPontos(x,espacoDia);
 	    	g.setColor(Color.RED);
 	    	System.out.println("Calculou pontos");
 	    	for(int i=0;i<pontosCanal.size();i++){
@@ -354,7 +351,7 @@ class SpaceView extends JPanel {
     }//end paintComponent
     
     
-    public boolean isIndicado(ArrayList indices, int indDesenhado){
+    public boolean isIndicado(ArrayList<Integer> indices, int indDesenhado){
     	
     	for(int i=0;i < indices.size();i++){
     		if(((Integer)indices.get(i)).intValue()==indDesenhado){
@@ -372,10 +369,19 @@ class SpaceView extends JPanel {
         	
     public void setPaginaAtras(){
     	primeiro = primeiro - intervalo-1;
-    	ultimo = ultimo - intervalo-1;
-        	
+    	ultimo = ultimo - intervalo-1;        	
+    }
+
+    public void setDezDiasFrente(){
+    	primeiro = primeiro + 10;
+    	ultimo = ultimo + 10;
     }
 	        
+    public void setDezDiaAtras(){
+    	primeiro = primeiro - 10;
+    	ultimo = ultimo - 10;
+    }
+
     public void setDiaFrente(){
     	primeiro = primeiro + 1;
     	ultimo = ultimo + 1;
@@ -384,7 +390,6 @@ class SpaceView extends JPanel {
     public void setDiaAtras(){
     	primeiro = primeiro - 1;
     	ultimo = ultimo - 1;
-
     }
         
     public void setPrimeiroCandle(){
@@ -399,49 +404,50 @@ class SpaceView extends JPanel {
     }
     
     
-  public void zoomMais(){
-	  
-	   if(z==2){
-		   intervalo = 120;
-		   espacoDia = 7;
-		   largCandle = 5;
-		   z = 3;
-		   
-	   }else if(z==1){
-		   intervalo = 200;
-		   espacoDia = 5;
-		   largCandle = 3;
-		   z = 2;
-	   }else{
-		   intervalo = 120;
-		   espacoDia = 7;
-		   largCandle = 5;
-		   z = 3;
-	   }
-	  primeiro = Integer.MAX_VALUE;
-   	  ultimo = Integer.MAX_VALUE;
-  }
-  public void zoomMenos(){
-	  
-	   if(z==3){
-		   intervalo = 200;
-		   espacoDia = 5;
-		   largCandle = 3;
-		   z = 2;
-	   }else if(z==2){
-		   intervalo = 300;
-		   espacoDia = 3;
-		   largCandle = 2;
-		   z = 1;
-	   }else{
-		   intervalo = 300;
-		   espacoDia = 3;
-		   largCandle = 2;
-		   z = 1;
-	   }
-	   primeiro = Integer.MAX_VALUE;
-   	   ultimo = Integer.MAX_VALUE;
- }
+	public void zoomMais() {
+
+		if (z == 2) {
+			intervalo = 120;
+			espacoDia = 7;
+			largCandle = 5;
+			z = 3;
+
+		} else if (z == 1) {
+			intervalo = 200;
+			espacoDia = 5;
+			largCandle = 3;
+			z = 2;
+		} else {
+			intervalo = 120;
+			espacoDia = 7;
+			largCandle = 5;
+			z = 3;
+		}
+		primeiro = Integer.MAX_VALUE;
+		ultimo = Integer.MAX_VALUE;
+	}
+
+	public void zoomMenos() {
+
+		if (z == 3) {
+			intervalo = 200;
+			espacoDia = 5;
+			largCandle = 3;
+			z = 2;
+		} else if (z == 2) {
+			intervalo = 300;
+			espacoDia = 3;
+			largCandle = 2;
+			z = 1;
+		} else {
+			intervalo = 300;
+			espacoDia = 3;
+			largCandle = 2;
+			z = 1;
+		}
+		primeiro = Integer.MAX_VALUE;
+		ultimo = Integer.MAX_VALUE;
+	}
     
     public void setDias(int dias){
     	System.out.println("Setou dias");
@@ -468,16 +474,15 @@ class SpaceView extends JPanel {
 	
 	public int getPontoY(int x){
 		
-		ArrayList pontos = new ArrayList();
 		double c = (new BigDecimal(y1Click - y2Click).divide(new BigDecimal(x1Click - x2Click),4,BigDecimal.ROUND_HALF_UP)).doubleValue();   
 	
 		return  (new Double(c*(x-x1Click) + y1Click)).intValue();
 
 	}
 	
-	public ArrayList getPontos(int i,int fator){
+	public ArrayList<Point> getPontos(int i,int fator){
 			
-		ArrayList pontos = new ArrayList();
+		ArrayList<Point> pontos = new ArrayList<Point>();
 		double c = (new BigDecimal(y1Click - y2Click).divide(new BigDecimal(x1Click - x2Click),4,BigDecimal.ROUND_HALF_UP)).doubleValue();   
 	
 		for(int j=1;j<4;j++){
@@ -622,18 +627,18 @@ class SpaceView extends JPanel {
 //			System.out.println("diaRelativo = " + diaRelativo);
 			
 			if(dia != -1){
-				
-				
-				
 				if(candles != null && dia < candles.size()){
-					String date = candles.get(dia).getPeriodo();
+//					String date = candles.get(dia).getPeriodo();
+					SimpleDateFormat sd = new SimpleDateFormat("dd-MM-yyyy");
+
+					String date = sd.format(Date.valueOf(candles.get(dia).getPeriodo().substring(0, 10)));
 					
 					MainFrame.showPreco("Data: " + date + " Preço:" 
 							+ getPreco(e.getPoint().y,menorPto,fator,escala,inicioGrafprincipal) 
-							+ " A: " + candles.get(dia).getAbertura() 
-							+ " Max: " + candles.get(dia).getMaxima()
-							+ " Min: " + candles.get(dia).getMinima()
-							+ " F: " + candles.get(dia).getFechamento());
+							+ " A: " + candles.get(dia).getValorAbertura().setScale(2, RoundingMode.CEILING).toString() 
+							+ " Max: " + candles.get(dia).getValorMaxima().setScale(2, RoundingMode.CEILING).toString()
+							+ " Min: " + candles.get(dia).getValorMinima().setScale(2, RoundingMode.CEILING).toString()
+							+ " F: " + candles.get(dia).getValorFechamento().setScale(2, RoundingMode.CEILING).toString());
 				}
 			}
 			else{

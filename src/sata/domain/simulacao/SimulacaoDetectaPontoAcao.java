@@ -17,7 +17,7 @@ import sata.domain.util.IConstants;
 public class SimulacaoDetectaPontoAcao implements ISimulacao, IConstants{
 
 	static Logger logger = Logger.getLogger(SimulacaoDetectaPontoAcao.class.getName());
-	static int _qtdAcertos = 0;
+	static int qtdAcertos = 0;
 	
 	public ResultadoSimulacaoTO getResultado(
 			List<CotacaoAtivoTO> listaDasCotacoes, Object[] parametros) {
@@ -85,7 +85,7 @@ public class SimulacaoDetectaPontoAcao implements ISimulacao, IConstants{
 						if (pontoAcao != -1) {
 							System.out.println("pontoAcao: " + pontoAcao + " data: " + cotacoes.get(pontoAcao).getPeriodo());
 						}
-						_qtdAcertos = 0;
+						qtdAcertos = 0;
 					} else {
 						break;
 					}
@@ -96,7 +96,7 @@ public class SimulacaoDetectaPontoAcao implements ISimulacao, IConstants{
 	
 	public int getPontoAcao(int ini, int fim, double retracao, int qtdCand, List<CotacaoAtivoTO> ca, boolean sobeOuDesce) {
 		// se chegou a quantidade de pontos necessarios
-		if (_qtdAcertos == 2) { 
+		if (qtdAcertos == 2) { 
 			return ini + 1; 
 		}
 		// calcula a retracao
@@ -121,7 +121,7 @@ public class SimulacaoDetectaPontoAcao implements ISimulacao, IConstants{
 				return -1;
 			}
 			if ((ca.get(i).getValorFechamento().compareTo(pivo) == maiorOuMenor*-1) && acertou) {
-				_qtdAcertos++;
+				qtdAcertos++;
 				sobeOuDesce = (maiorOuMenor == 1 ? false : true);
 				fim = (sobeOuDesce ? ini : fim);
 				return getPontoAcao(i-1, fim, retracao, qtdCand, ca, sobeOuDesce);

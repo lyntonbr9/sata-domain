@@ -276,7 +276,7 @@ public class DataManagement {
 ////			dm.importarArqCotacaoHistoricaBovespaToDB(nomeOpcao, ano);
 //		
 		for(int i=2014; i < 2015; i++){
-			dm.importarArqCotacaoHistoricaBovespaToDB("PETR4", String.valueOf(i));	
+			dm.importarArqCotacaoHistoricaBovespaToDB("PETR4", String.valueOf(i));
 		}
 		
 //		dm.importarArqCotacaoHistoricaOpcoesBovespaToDB("PETR", "PETR4", ano);

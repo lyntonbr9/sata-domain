@@ -47,7 +47,7 @@ public class MainFrame {
 	    frame = new JFrame(title);
 	   
 	    //seta a opacidade da janela
-	    setOpacidade(0.5f);
+	    setOpacidade(0.3f);
 	    
 	    //frame = new JTransFrame(0,0,0);
 	    // Create a component to add to the frame
@@ -129,6 +129,17 @@ public class MainFrame {
     public static void lastDia(){
 		
     	grafico.setDiaAtras();
+    	grafico.repaint();
+	}
+    
+    public static void nextDezDias(){
+    	grafico.setDezDiasFrente();
+    	grafico.repaint();
+	}
+	
+    public static void lastDezDias(){
+		
+    	grafico.setDezDiaAtras();
     	grafico.repaint();
 	}
 	
