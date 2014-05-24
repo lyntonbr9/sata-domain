@@ -31,7 +31,7 @@ public class MainFrame {
     static{
     	try {
     		Class<?> awtUtilitiesClass = Class.forName("com.sun.awt.AWTUtilities");
-    		metodoOpacidade = awtUtilitiesClass.getMethod("setWindowOpacity", Window.class, float.class); 
+    		metodoOpacidade = awtUtilitiesClass.getMethod("setWindowOpacity", Window.class, float.class);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -89,13 +89,11 @@ public class MainFrame {
 	}
 	
 	public static void setAcao(String acao){
-		
 		grafico.setAcao(acao);
 		grafico.repaint();
 	}
 	
 	public static void setDiasCandle(int dias){
-		
 		grafico.setDiasCandle(dias);
 		grafico.repaint();
 	}
@@ -105,7 +103,6 @@ public class MainFrame {
 	}
 	
 	public static void showPreco(String preco){
-		
 		grafico.setToolTipText(preco);
 	}
 	
@@ -116,7 +113,6 @@ public class MainFrame {
 	}
 	
     public static void lastPage(){
-    	
     	grafico.setPaginaAtras();
     	grafico.repaint();
     }
@@ -127,7 +123,6 @@ public class MainFrame {
 	}
 	
     public static void lastDia(){
-		
     	grafico.setDiaAtras();
     	grafico.repaint();
 	}

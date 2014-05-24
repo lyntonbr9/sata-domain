@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
-@Table(name="SplitAtivo")
+@Table(name="SplitAcao")
 public class SplitAtivoTO implements TO, Serializable {
 	private static final long serialVersionUID = 5939301860593681755L;
 	

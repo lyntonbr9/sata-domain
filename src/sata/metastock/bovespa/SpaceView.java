@@ -24,6 +24,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import sata.domain.simulacao.SimulacaoAcaoAltaVarPoucoTempo;
+import sata.domain.simulacao.to.IndicadoSimulacaoAltaVarPoucoTempoTO;
 import sata.domain.to.CotacaoAtivoTO;
 import sata.metastock.data.ValuesMeta;
 import sata.metastock.indices.IFR;
@@ -160,7 +161,8 @@ class SpaceView extends JPanel {
         /*Simulação*/
 		SimulacaoAcaoAltaVarPoucoTempo s = new SimulacaoAcaoAltaVarPoucoTempo();				
 		s.getResultado(candles, null);
-		ArrayList<Integer> indicesIndicados = s.getIndicesIndicadosSimulacao();
+		List<Integer> indicesIndicados = s.getIndicesIndicadosSimulacao();
+		List<IndicadoSimulacaoAltaVarPoucoTempoTO> indicados = s.getIndicadosSimulacao();
         
         if(reload || !acao.equals(acaoAnterior)){
         	reload = false;
@@ -300,17 +302,36 @@ class SpaceView extends JPanel {
 	        		
 	        		/*simulação*/
 	        		if(isIndicado(indicesIndicados, i)){
-	        			g.setColor(Color.BLACK);
-		        		g.fillRect(x*espacoDia+espacoDia-largCandle/2,inicioGrafprincipal-ptoC-2,largCandle + 10,3);
+	        			if(s.getIndicadoPorIndice(i).isAlta()) {
+	        				g.setColor(Color.GREEN);
+	        			} else if(s.getIndicadoPorIndice(i).isEntradaAlta()) {
+	        				g.setColor(Color.CYAN);
+	        			} else if(s.getIndicadoPorIndice(i).isNaoEntrarAlta()) {
+	        				g.setColor(Color.BLACK);
+	        			} else if(s.getIndicadoPorIndice(i).isSaidaAlta()) {
+	        				g.setColor(Color.ORANGE);
+	        			}
+//		        		g.fillRect(x*espacoDia+espacoDia-largCandle/2,inicioGrafprincipal-ptoC-2,largCandle + 20,3);
+		        		g.fillRect(x*espacoDia+espacoDia-largCandle/2,inicioGrafprincipal-ptoO-2,largCandle + 20,3);
 		        	}
 
 	        	}else{
 	        		g.setColor(Color.RED);
 	        		g.fillRect(x*espacoDia+espacoDia-largCandle/2,inicioGrafprincipal-ptoO-2,largCandle,ptoO - ptoC + 1);
+	        		
 	        		/*simulação*/
 	        		if(isIndicado(indicesIndicados, i)){
-	        			g.setColor(Color.BLACK);
-		        		g.fillRect(x*espacoDia+espacoDia-largCandle/2,inicioGrafprincipal-ptoC-2,largCandle + 10,3);
+	        			if(s.getIndicadoPorIndice(i).isAlta()) {
+	        				g.setColor(Color.GREEN);
+	        			} else if(s.getIndicadoPorIndice(i).isEntradaAlta()) {
+	        				g.setColor(Color.CYAN);
+	        			} else if(s.getIndicadoPorIndice(i).isNaoEntrarAlta()) {
+	        				g.setColor(Color.BLACK);
+	        			} else if(s.getIndicadoPorIndice(i).isSaidaAlta()) {
+	        				g.setColor(Color.ORANGE);
+	        			}
+//	        			g.setColor(s.getIndicadoPorIndice(i).isAlta() ? Color.GREEN : Color.ORANGE);
+		        		g.fillRect(x*espacoDia+espacoDia-largCandle/2,inicioGrafprincipal-ptoC-2,largCandle + 20,3);
 		        	}
 	        	}
 	        		        	
@@ -351,7 +372,7 @@ class SpaceView extends JPanel {
     }//end paintComponent
     
     
-    public boolean isIndicado(ArrayList<Integer> indices, int indDesenhado){
+    public boolean isIndicado(List<Integer> indices, int indDesenhado){
     	
     	for(int i=0;i < indices.size();i++){
     		if(((Integer)indices.get(i)).intValue()==indDesenhado){

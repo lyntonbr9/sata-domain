@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 @Entity
-@Table(name="CotacaoAtivo")
+@Table(name="CotacaoAcao")
 public class CotacaoAtivoTO implements TO, Comparable<CotacaoAtivoTO>, Serializable {
 	private static final long serialVersionUID = -7631873400428727309L;
 

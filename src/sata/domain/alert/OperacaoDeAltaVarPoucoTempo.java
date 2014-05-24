@@ -32,7 +32,7 @@ public class OperacaoDeAltaVarPoucoTempo {
 				ValuesMeta values = new ValuesMeta(acao,"");
 				listaCotacoesAtivoTO = values.getValores();
 				s.getResultado(listaCotacoesAtivoTO, null);
-				ArrayList<Integer> indicesIndicados = s.getIndicesIndicadosSimulacao();
+				List<Integer> indicesIndicados = s.getIndicesIndicadosSimulacao();
 				if (SATAUtil.indicePertence(indicesIndicados, listaCotacoesAtivoTO.size() - 3)){
 					listaDeAcoesParaAlerta.add(acao);
 				}				
