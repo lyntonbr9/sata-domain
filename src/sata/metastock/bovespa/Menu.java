@@ -79,7 +79,8 @@ public class Menu extends JPanel {
 			IAcaoDAO acaoDAO = SATAFactoryFacade.getAcaoDAO();
 			List<Acao> listaAcao = acaoDAO.listar();
 			for (Acao a : listaAcao) {
-				if (a.getNome().equalsIgnoreCase("PETR4"))
+//				if (a.getNome().equalsIgnoreCase("PETR4") || a.getNome().equalsIgnoreCase("VALE5"))
+				if (a.getNome().equalsIgnoreCase("VALE5"))
 					listaAtivos.add(a.getNome());
 			}
 		} catch (Exception e) {
