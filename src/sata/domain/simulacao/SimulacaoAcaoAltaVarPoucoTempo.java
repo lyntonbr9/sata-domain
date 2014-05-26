@@ -1,6 +1,7 @@
 package sata.domain.simulacao;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -133,31 +134,41 @@ public class SimulacaoAcaoAltaVarPoucoTempo implements ISimulacao, IConstants{
 		
 		List<IndicadoSimulacaoAltaVarPoucoTempoTO> chavesAlta = new ArrayList<IndicadoSimulacaoAltaVarPoucoTempoTO>();
 		
-		// para todas as chaves indicadas
+		// PARA TODAS AS CHAVES INDICADAS
 		for(int i=0; i < chaves.size();i++){
 			int indiceIndicado = chaves.get(i).getIndice();
-			// primeira tentativa de entrada que pode NÃO CHEGAR A ENTRAR NA OPERAÇÃO
+			// PRIMEIRA TENTATIVA DE ENTRADA NA OPERACAO PQ PODE NÃO CHEGAR A ENTRAR NA OPERAÇÃO
 			int entradaAlta = indiceIndicado + 3;
 			if (chaves.get(i).isAlta()) {
 				if (entradaAlta < listaDasCotacoes.size()) {
 					for (int j = entradaAlta; j < entradaAlta + 5; j++) {
-						// SE O VALOR DA ABERTURA DO DIA QUE VAI ENTRAR FOR ABAIXO DA MINIMA DO DIA ANTERIOR ENTAO NAO ENTRA NA OPERACAO
-						// OU SE O FECHAMENTO FOR MENOR DO QUE O DIA DA ABERTURA ENTAO SAI NO FECHAMENTO
-						if (j == entradaAlta && (listaDasCotacoes.get(j).getValorAbertura().compareTo(listaDasCotacoes.get(j-1).getValorMinima()) == -1 || listaDasCotacoes.get(j).getValorFechamento().compareTo(listaDasCotacoes.get(j).getValorAbertura()) == -1)) {
-							// INDICA QUE NAO VAI ENTRAR NA OPERACAO
+						// SE FOR O DIA DE ENTRADA E 
+						// SE O VALOR DA ABERTURA FOR ABAIXO DA MINIMA DO DIA ANTERIOR ENTAO NAO ENTRA NA OPERACAO
+						// OU SE O FECHAMENTO FOR MENOR DO QUE A ABERTURA DO DIA (CANDLE VERMELHO) E A MINIMA FOR MENOR
+						// DO QUE A METADE DO CORPO DO DIA ANTERIOR ENTAO SAI NO FECHAMENTO
+						// OU SE O FECHAMENTO FOR MAIOR DO QUE A ABERTURA DO DIA (CANDLE VERDE) E NAO SUBIR 
+						// MAIS DO QUE 1 POR CENTO ENTAO SAI NO FECHAMENTO
+						if (j == entradaAlta && 
+								(listaDasCotacoes.get(j).getValorAbertura().compareTo(listaDasCotacoes.get(j-1).getValorMinima()) == -1 
+								|| (listaDasCotacoes.get(j).getValorFechamento().compareTo(listaDasCotacoes.get(j).getValorAbertura()) == -1
+								&& listaDasCotacoes.get(j).getValorMinima().compareTo(metadeCorpo(listaDasCotacoes.get(j-1))) == -1)
+								|| (listaDasCotacoes.get(j).getValorFechamento().compareTo(listaDasCotacoes.get(j).getValorAbertura()) > -1
+								&& variacaoDia(listaDasCotacoes.get(j)).compareTo(BigDecimal.valueOf(0.01)) == -1)
+								)) {
+							// INDICA QUE NAO VAI ENTRAR NA OPERACAO OU SAI NO MESMO DIA
 							IndicadoSimulacaoAltaVarPoucoTempoTO indicadoNaoEntrarAlta = new IndicadoSimulacaoAltaVarPoucoTempoTO();
 							indicadoNaoEntrarAlta.setIndice(j);
 							indicadoNaoEntrarAlta.setNaoEntrarAlta(true);
 							chavesAlta.add(indicadoNaoEntrarAlta);
 							break;
 						} else if(j == entradaAlta) {
-							// adiciona o dia de TENTATIVA DE ENTRADA
+							// ADICIONA O DIA DE TENTATIVA DE ENTRADA
 							IndicadoSimulacaoAltaVarPoucoTempoTO pivo = new IndicadoSimulacaoAltaVarPoucoTempoTO();
 							pivo.setIndice(entradaAlta);
 							pivo.setEntradaAlta(true);
 							chavesAlta.add(pivo);
 						}
-						// SE NAO FOR O DIA DE ENTRADA E O FECHAMENTO FOR MENOR DO QUE A ABERTURA NO DIA ENTAO SAI DA OPERACAO
+						// SE NAO FOR O DIA DE ENTRADA E O FECHAMENTO FOR MENOR DO QUE A ABERTURA NO DIA ENTAO SAI DA OPERACAO NO FECHAMENTO
 						if (j > entradaAlta && listaDasCotacoes.get(j).getValorFechamento().compareTo(listaDasCotacoes.get(j).getValorAbertura()) == -1) {
 							// SAI DA OPERACAO
 							IndicadoSimulacaoAltaVarPoucoTempoTO indicadoSaidaAlta = new IndicadoSimulacaoAltaVarPoucoTempoTO();
@@ -172,6 +183,14 @@ public class SimulacaoAcaoAltaVarPoucoTempo implements ISimulacao, IConstants{
 		}
 		
 		return chavesAlta;
+	}
+	
+	public BigDecimal metadeCorpo(CotacaoAtivoTO cotacao) {
+		return cotacao.getValorMinima().add(cotacao.getValorMaxima().subtract(cotacao.getValorMinima()).divide(BigDecimal.valueOf(2), RoundingMode.CEILING));
+	}
+	
+	public BigDecimal variacaoDia(CotacaoAtivoTO cotacao) {
+		return cotacao.getValorFechamento().subtract(cotacao.getValorAbertura()).divide(cotacao.getValorAbertura(), RoundingMode.CEILING);
 	}
 	
 	public ArrayList<Integer> calculaNumeroDiasAteRetorno(List<IndicadoSimulacaoAltaVarPoucoTempoTO> chaves, List<CotacaoAtivoTO> listaDasCotacoes,double[] valor){
