@@ -186,11 +186,11 @@ public class SimulacaoAcaoAltaVarPoucoTempo implements ISimulacao, IConstants{
 	}
 	
 	public BigDecimal metadeCorpo(CotacaoAtivoTO cotacao) {
-		return cotacao.getValorMinima().add(cotacao.getValorMaxima().subtract(cotacao.getValorMinima()).divide(BigDecimal.valueOf(2), RoundingMode.CEILING));
+		return cotacao.getValorMinima().add(cotacao.getValorMaxima().subtract(cotacao.getValorMinima()).divide(BigDecimal.valueOf(2), RoundingMode.HALF_EVEN));
 	}
 	
 	public BigDecimal variacaoDia(CotacaoAtivoTO cotacao) {
-		return cotacao.getValorFechamento().subtract(cotacao.getValorAbertura()).divide(cotacao.getValorAbertura(), RoundingMode.CEILING);
+		return cotacao.getValorFechamento().subtract(cotacao.getValorAbertura()).divide(cotacao.getValorAbertura(), RoundingMode.HALF_EVEN);
 	}
 	
 	public ArrayList<Integer> calculaNumeroDiasAteRetorno(List<IndicadoSimulacaoAltaVarPoucoTempoTO> chaves, List<CotacaoAtivoTO> listaDasCotacoes,double[] valor){

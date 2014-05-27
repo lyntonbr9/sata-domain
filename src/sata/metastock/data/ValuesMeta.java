@@ -9,11 +9,11 @@ package sata.metastock.data;
 import java.sql.SQLException;
 import java.util.List;
 
-import sata.domain.dao.DAOFactory;
 import sata.domain.dao.ICotacaoAtivoDAO;
 import sata.domain.dao.SATAFactoryFacade;
 import sata.domain.to.CotacaoAtivoTO;
 import sata.domain.util.SATAUtil;
+import sata.metastock.robos.BuscaCotacao;
 
 /**
  * @author Flavio
@@ -66,6 +66,9 @@ public class ValuesMeta {
 		try {
 			ICotacaoAtivoDAO caDAO = SATAFactoryFacade.getCotacaoAtivoDAO();
 			listaCotacoes = caDAO.getCotacoesDoAtivo(acao);
+			// adiciona a cotacao atual
+			BuscaCotacao bc = new BuscaCotacao();
+			listaCotacoes.add(bc.getCotacaoAtivo(acao));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

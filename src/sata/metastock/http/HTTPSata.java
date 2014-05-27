@@ -9,28 +9,26 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Scanner;
 
-import sata.domain.util.SATAUtil;
-
 public class HTTPSata {
 	
 	/**
-	 * The POST method. Accepts 2 parameters
+	 * The POST method.
 	 * 
 	 * @param targetURL
 	 *            : The URL to POST to.
 	 * @param contentHash
-	 *            : The hashtable of the paramters to be posted.
+	 *            : The hashtable of the parameters to be posted.
 	 * 
 	 * @return The String returned as a result of POSTing.
 	 */
 	public static String POST(String targetURL, Hashtable<String, String> contentHash) {
 		try {
-			if (SATAUtil.isAmbienteDesenvolvimento()) {
-				System.setProperty("http.proxyHost", "proxyad.br-petrobras.com.br");
-				System.setProperty("http.proxyPort", "9090");
-				System.setProperty("https.proxyHost", "proxyad.br-petrobras.com.br");
-				System.setProperty("https.proxyPort", "9090");
-			}
+//			if (SATAUtil.isAmbienteDesenvolvimento()) {
+//				System.setProperty("http.proxyHost", "proxyad.br-petrobras.com.br");
+//				System.setProperty("http.proxyPort", "9090");
+//				System.setProperty("https.proxyHost", "proxyad.br-petrobras.com.br");
+//				System.setProperty("https.proxyPort", "9090");
+//			}
 			
 			URL url;
 			HttpURLConnection conn;
@@ -101,6 +99,7 @@ public class HTTPSata {
 			}
 
 			in.close();
+			sc.close();
 			
 			// faz a conversão de UTF-8 para ISO-8859-1 por causa da acentuacao
 			String respostaUTF8 = new String(returnString.getBytes(), "UTF-8");
@@ -112,6 +111,67 @@ public class HTTPSata {
 		}
 
 		return "";
+	}
+	
+	/**
+	 * The GET method.
+	 * 
+	 * @param targetURL
+	 *            : The URL to GET.
+	 * @param contentHash
+	 *            : The hashtable of the parameters to be send.
+	 * 
+	 * @return The String returned as a result of GETing.
+	 */
+	public static String GET(String targetURL, Hashtable<String, String> contentHash) {
+		// String returned as the result of the GET.
+		String content = "";
+		try {
+//			if (SATAUtil.isAmbienteDesenvolvimento()) {
+//				System.setProperty("http.proxyHost", "proxyad.br-petrobras.com.br");
+//				System.setProperty("http.proxyPort", "9090");
+//				System.setProperty("https.proxyHost", "proxyad.br-petrobras.com.br");
+//				System.setProperty("https.proxyPort", "9090");
+//			}
+			
+			URL url;
+			HttpURLConnection conn;
+
+			// The data streams used to read from and write to the URL connection.
+			DataInputStream in;
+
+			// Create the URL object and make a connection to it.
+			url = new URL(targetURL);
+			conn = (HttpURLConnection) url.openConnection();
+
+			// Set connection parameters. We need to perform input.
+			conn.setDoInput(true);
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("charset", "UTF-8");
+
+			// Disable use of caches.
+			conn.setUseCaches(false);
+
+			// Set the content type we are POSTing. We impersonate it as
+			// encoded form data
+//			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			
+			// Read input from the input stream.
+			in = new DataInputStream(conn.getInputStream());
+			
+			// Read the input stream
+			Scanner sc = new Scanner(in);
+			while(sc.hasNextLine()) {
+				content += sc.nextLine() + "\n";
+			}
+			// close the streams
+			in.close();
+			sc.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return content;
 	}
 
 }

@@ -79,7 +79,7 @@ public class SimulacaoDetectaPontoAcao implements ISimulacao, IConstants{
 				BigDecimal cotaI = cotacoes.get(i).getValorFechamento().setScale(2, BigDecimal.ROUND_HALF_EVEN);
 				BigDecimal cotaJ = cotacoes.get(j).getValorFechamento().setScale(2, BigDecimal.ROUND_HALF_EVEN);
 				// se a queda for maior do que 10%
-				if (cotaI.subtract(cotaJ).divide(cotaI, RoundingMode.CEILING).compareTo(BigDecimal.valueOf(0.1)) == 1) {
+				if (cotaI.subtract(cotaJ).divide(cotaI, RoundingMode.HALF_EVEN).compareTo(BigDecimal.valueOf(0.1)) == 1) {
 					if ((j - i) < qtdMaxCandlesComeco) {
 						int pontoAcao = s.getPontoAcao(i, j, 0.4, qtdMaxCandles, cotacoes, true);
 						if (pontoAcao != -1) {

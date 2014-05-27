@@ -656,10 +656,10 @@ class SpaceView extends JPanel {
 					
 					MainFrame.showPreco("Data: " + date + " Preço:" 
 							+ getPreco(e.getPoint().y,menorPto,fator,escala,inicioGrafprincipal) 
-							+ " Min: " + candles.get(dia).getValorMinima().setScale(2, RoundingMode.CEILING).toString()
-							+ " Max: " + candles.get(dia).getValorMaxima().setScale(2, RoundingMode.CEILING).toString()
-							+ " A: " + candles.get(dia).getValorAbertura().setScale(2, RoundingMode.CEILING).toString()
-							+ " F: " + candles.get(dia).getValorFechamento().setScale(2, RoundingMode.CEILING).toString());
+							+ " Min: " + candles.get(dia).getValorMinima().setScale(2, RoundingMode.HALF_EVEN).toString()
+							+ " Max: " + candles.get(dia).getValorMaxima().setScale(2, RoundingMode.HALF_EVEN).toString()
+							+ " A: " + candles.get(dia).getValorAbertura().setScale(2, RoundingMode.HALF_EVEN).toString()
+							+ " F: " + candles.get(dia).getValorFechamento().setScale(2, RoundingMode.HALF_EVEN).toString());
 				}
 			}
 			else{
