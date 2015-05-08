@@ -38,46 +38,18 @@ public class BMFBovespa {
 
 		if (acao != null) {
 			Hashtable h = new Hashtable();
-			h.put("__EVENTTARGET","");
+			h.put("__EVENTTARGET","ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$rptResultadoBuscaEmpresa$ctl03$lnkEmpresa");
 			h.put("__EVENTARGUMENT","");
-			h.put("__LASTFOCUS","");
 			h.put("__VIEWSTATE",SATAPropertyLoader.getProperty("viewState"));
 			h.put("ctl00$ucTopo$btnBusca","Busca");
 			h.put("ctl00$menuBOVESPASecundario","");
-			h.put("ctl00$contentPlaceHolderConteudo$tabOpcoes","{\"State\"=%s&\"+{},\"TabState\"=%s&\"+{\"ctl00_contentPlaceHolderConteudo_tabOpcoes_tabPosicoesAberto\"=%s&\"+{\"Selected\"=%s&\"+true},\"ctl00_contentPlaceHolderConteudo_tabOpcoes_tabPosicoesAberto_tabOpcoesEmp\"=%s&\"+{\"Selected\"=%s&\"+true},\"ctl00_contentPlaceHolderConteudo_tabOpcoes_tabSeriesAutorizadas_tabSeriesAutEmp\"=%s&\"+{\"Selected\"=%s&\"+true}}}");
-			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$","rbTodos");
-			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$cmbVcto","0");
-			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaData$txtConsultaData","2013-11-19");
-			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaData$txtConsultaData$dateInput","2013-11-19-00-00-00");
-			h.put("ctl00_contentPlaceHolderConteudo_posicoesAbertoEmp_txtConsultaData_txtConsultaData_calendar_SD","[]");
-			h.put("ctl00_contentPlaceHolderConteudo_posicoesAbertoEmp_txtConsultaData_txtConsultaData_calendar_AD","[[2013,9,23],[2013,11,19],[2013,11,19]]");
-			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaEmpresa",acao.getNomeEmpresa());
-			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$btnBuscarEmpresa","buscar");
-			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaDataDownload$txtConsultaDataDownload","2013-11-19");
-			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaDataDownload$txtConsultaDataDownload$dateInput","2013-11-19-00-00-00");
-			h.put("ctl00_contentPlaceHolderConteudo_posicoesAbertoEmp_txtConsultaDataDownload_txtConsultaDataDownload_calendar_SD","[]");
-			h.put("ctl00_contentPlaceHolderConteudo_posicoesAbertoEmp_txtConsultaDataDownload_txtConsultaDataDownload_calendar_AD","[[2013,9,23],[2013,11,19],[2013,11,19]]");
+			h.put("ctl00$contentPlaceHolderConteudo$tabOpcoes","{\"State\":{},\"TabState\":{\"ctl00_contentPlaceHolderConteudo_tabOpcoes_tabPosicoesAberto\":{\"Selected\":true},\"ctl00_contentPlaceHolderConteudo_tabOpcoes_tabPosicoesAberto_tabOpcoesEmp\":{\"Selected\":true},\"ctl00_contentPlaceHolderConteudo_tabOpcoes_tabSeriesAutorizadas_tabSeriesAutEmp\":{\"Selected\":true}}}");
 			h.put("ctl00$contentPlaceHolderConteudo$mpgOpcoes_Selected","0");
-			h.put("cboAgentesCorretorasNome","#");
-			h.put("cboAgentesCorretorasCodigo","#");
 			
 			String url = "http://www.bmfbovespa.com.br/opcoes/opcoes.aspx?Idioma=pt-br";
-			
-//			h.put("papel","PETR4");
-//			h.put("btBuscar.x","0");
-//			h.put("btBuscar.y","0");
-//			String url = "http://www.ondeinvestirbylopesfilho.com.br/cli/spl/cot/cotacao.asp";
 
 			String html = SATAUtil.removeExcessoEspacos(HTTPSata.POST(url, h));
 
-			/*if (acao.getNome().equals("PETR4")) {
-				BufferedReader in = new BufferedReader(new FileReader("C:\\FILES\\pessoal\\projetos\\sata\\workspace\\sata\\logs\\BMFSource.txt"));
-				String str;
-				String html = "";
-				while ((str = in.readLine()) != null) {
-					html += str + "\n";
-				}
-				in.close();*/	
 			int corte = html.indexOf("de Compra</h2>");
 			if (corte > -1) {
 				html = html.substring(corte, html.indexOf("de Venda</h2>"));
@@ -116,6 +88,11 @@ public class BMFBovespa {
 	}
 
 	public static void main(String[] args) throws IOException, ParseException, SQLException {
-		atualizarCadastroOpcoes();
+//		atualizarCadastroOpcoes();
+		Acao acao = new Acao();
+		acao.setNomeEmpresa("PETROBRAS");
+		acao.setTipo("PN");
+		List<OpcaoTO> opcoes = new ArrayList<OpcaoTO>();
+		opcoes.addAll(getOpcoes(acao));
 	}
 }

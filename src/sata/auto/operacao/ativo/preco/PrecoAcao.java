@@ -41,7 +41,6 @@ public class PrecoAcao extends Preco implements IConstants {
 		CotacaoAtivoTO cotacaoAtivo = getCotacaoAcao(dia);
 		valor = cotacaoAtivo.getValorFechamento();
 		volatilidade = cotacaoAtivo.getValorVolatilidadeAnual();
-//		volatilidade = new BigDecimal(0.27);
 	}
 	
 	@Override

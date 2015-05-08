@@ -24,10 +24,8 @@ public class HTTPSata {
 	public static String POST(String targetURL, Hashtable<String, String> contentHash) {
 		try {
 //			if (SATAUtil.isAmbienteDesenvolvimento()) {
-//				System.setProperty("http.proxyHost", "proxyad.br-petrobras.com.br");
-//				System.setProperty("http.proxyPort", "9090");
-//				System.setProperty("https.proxyHost", "proxyad.br-petrobras.com.br");
-//				System.setProperty("https.proxyPort", "9090");
+				System.setProperty("http.proxyHost", "proxyad.br-petrobras.com.br");
+				System.setProperty("http.proxyPort", "9090");
 //			}
 			
 			URL url;
