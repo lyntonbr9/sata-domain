@@ -38,13 +38,26 @@ public class BMFBovespa {
 
 		if (acao != null) {
 			Hashtable h = new Hashtable();
-			h.put("__EVENTTARGET","ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$rptResultadoBuscaEmpresa$ctl03$lnkEmpresa");
+//			h.put("__EVENTTARGET","ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$lnkLetraP");
 			h.put("__EVENTARGUMENT","");
+			h.put("__LASTFOCUS","");
 			h.put("__VIEWSTATE",SATAPropertyLoader.getProperty("viewState"));
 			h.put("ctl00$ucTopo$btnBusca","Busca");
 			h.put("ctl00$menuBOVESPASecundario","");
 			h.put("ctl00$contentPlaceHolderConteudo$tabOpcoes","{\"State\":{},\"TabState\":{\"ctl00_contentPlaceHolderConteudo_tabOpcoes_tabPosicoesAberto\":{\"Selected\":true},\"ctl00_contentPlaceHolderConteudo_tabOpcoes_tabPosicoesAberto_tabOpcoesEmp\":{\"Selected\":true},\"ctl00_contentPlaceHolderConteudo_tabOpcoes_tabSeriesAutorizadas_tabSeriesAutEmp\":{\"Selected\":true}}}");
+			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$", "rbTodos");
+			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$cmbVcto","0");
+			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaData$txtConsultaData","2015-05-08");
+			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaData$txtConsultaData$dateInput","2015-05-08-00-00-00");
+//			h.put("ctl00_contentPlaceHolderConteudo_posicoesAbertoEmp_txtConsultaData_txtConsultaData_calendar_SD","[]");
+//			h.put("ctl00_contentPlaceHolderConteudo_posicoesAbertoEmp_txtConsultaData_txtConsultaData_calendar_AD","[[2015,3,12],[2015,5,8],[2015,5,8]]");
+			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaEmpresa",acao.getNomeEmpresa());
+			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaDataDownload$txtConsultaDataDownload","2015-05-08");
+			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$txtConsultaDataDownload$txtConsultaDataDownload$dateInput","2015-05-08-00-00-00");
+//			h.put("ctl00_contentPlaceHolderConteudo_posicoesAbertoEmp_txtConsultaDataDownload_txtConsultaDataDownload_calendar_SD","[]");
+//			h.put("ctl00_contentPlaceHolderConteudo_posicoesAbertoEmp_txtConsultaDataDownload_txtConsultaDataDownload_calendar_AD","[[2015,3,12],[2015,5,8],[2015,5,8]]");
 			h.put("ctl00$contentPlaceHolderConteudo$mpgOpcoes_Selected","0");
+			h.put("ctl00$contentPlaceHolderConteudo$posicoesAbertoEmp$btnBuscarEmpresa","buscar");
 			
 			String url = "http://www.bmfbovespa.com.br/opcoes/opcoes.aspx?Idioma=pt-br";
 
@@ -83,7 +96,7 @@ public class BMFBovespa {
 				} while (corteSerie > -1);
 			}
 		}
-		System.out.println("Atualizando opcoes da " + acao.getNome() + " ...");
+		System.out.println("Atualizando opcoes da " + acao.getNomeEmpresa() + " ...");
 		return opcoes;
 	}
 
@@ -92,6 +105,8 @@ public class BMFBovespa {
 		Acao acao = new Acao();
 		acao.setNomeEmpresa("PETROBRAS");
 		acao.setTipo("PN");
+//		acao.setNomeEmpresa("VALE");
+//		acao.setTipo("PN");
 		List<OpcaoTO> opcoes = new ArrayList<OpcaoTO>();
 		opcoes.addAll(getOpcoes(acao));
 	}
