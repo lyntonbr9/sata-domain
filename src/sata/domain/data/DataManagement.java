@@ -275,8 +275,14 @@ public class DataManagement {
 ////		for(String nomeOpcao: listaCodigosOpcoesLiquidas)
 ////			dm.importarArqCotacaoHistoricaBovespaToDB(nomeOpcao, ano);
 //		
-		for(int i=2014; i < 2015; i++){
-			dm.importarArqCotacaoHistoricaBovespaToDB("VALE5", String.valueOf(i));
+//		ICotacaoAtivoDAO caDAO = SATAFactoryFacade.getCotacaoAtivoDAO();
+//		System.out.println(caDAO.existeCotacao("PETR4", "2015-01-02"));
+		
+//		ICotacaoOpcaoDAO cotacaoOpcaoDAO = SATAFactoryFacade.getCotacaoOpcaoDAO();
+//		System.out.println(cotacaoOpcaoDAO.existeCotacao("PETRA1", "2015-01-02"));
+		
+		for(int i=2015; i < 2016; i++){
+			dm.importarArqCotacaoHistoricaOpcoesBovespaToDB("PETR","PETR4", String.valueOf(i));
 		}
 		
 //		dm.importarArqCotacaoHistoricaOpcoesBovespaToDB("PETR", "PETR4", ano);

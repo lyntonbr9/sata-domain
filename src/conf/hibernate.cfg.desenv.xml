@@ -35,6 +35,7 @@
 		<mapping class="sata.auto.operacao.ativo.Acao"/>
 		<mapping class="sata.domain.to.SplitAtivoTO"/>
 		<mapping class="sata.domain.to.CotacaoAtivoTO"/>
+		<mapping class="sata.domain.to.CotacaoOpcaoTO"/>
 		<mapping class="sata.domain.to.AlertaTO"/>
 		<mapping class="sata.domain.to.SerieOperacoesTO"/>
 		<mapping class="sata.domain.to.OperacaoRealizadaTO"/>

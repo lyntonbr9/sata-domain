@@ -31,7 +31,7 @@ public class CotacaoOpcaoTO implements TO, Comparable<CotacaoOpcaoTO>, Serializa
 	@Id @Column
 	private String periodo;
 	
-	@Column
+	@Transient
 	private String codigoAcao;
 	
 	@Column
